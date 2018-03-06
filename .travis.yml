@@ -1,0 +1,15 @@
+language: java
+jdk:
+- oraclejdk8
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+before_script:
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3 # give xvfb some time to start
+before_install:
+- wget http://apache.rediris.es/kafka/1.0.0/kafka_2.11-1.0.0.tgz -O kafka.tgz
+- tar xzf kafka.tgz
+- cd kafka
+- nohup bash -c "bin/zookeeper-server-start.sh config/zookeeper.properties &"
+- nohup bash -c "bin/kafka-server-start.sh config/server.properties &"
